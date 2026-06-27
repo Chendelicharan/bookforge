@@ -7,6 +7,7 @@ export interface BookSettings {
   binding: 'Paperback' | 'Hardcover';
   orientation: 'Portrait' | 'Landscape';
   columns: 1 | 2 | 3;
+  viewMode?: 'single' | 'spread';
 }
 
 export interface TypographySettings {
@@ -140,7 +141,8 @@ export function createNewProject(title: string, templateId: string = 'novel'): B
     margin: 'Medium',
     binding: 'Paperback',
     orientation: 'Portrait',
-    columns: 1
+    columns: 1,
+    viewMode: 'single'
   };
 
   const defaultTypography: TypographySettings = {

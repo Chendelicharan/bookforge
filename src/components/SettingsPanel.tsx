@@ -192,6 +192,39 @@ export default function SettingsPanel({ settings, onChange }: SettingsPanelProps
           </div>
         )}
       </div>
+
+      <div className="border-t border-zinc-200 dark:border-zinc-850 my-4"></div>
+
+      {/* Preview Mode Settings */}
+      <div>
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-3">Preview Layout</h3>
+        
+        <div className="mb-4">
+          <label className="text-xs font-medium block mb-1.5 text-zinc-600 dark:text-zinc-400">View Style</label>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() => updateSetting('viewMode', 'single')}
+              className={`rounded-xl py-2 text-xs border font-semibold transition-all ${
+                (settings.viewMode || 'single') === 'single'
+                  ? 'border-indigo-500 bg-indigo-50/50 text-indigo-600 dark:bg-indigo-950/20 dark:text-indigo-400'
+                  : 'border-zinc-200 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-850'
+              }`}
+            >
+              Single Scroll
+            </button>
+            <button
+              onClick={() => updateSetting('viewMode', 'spread')}
+              className={`rounded-xl py-2 text-xs border font-semibold transition-all ${
+                settings.viewMode === 'spread'
+                  ? 'border-indigo-500 bg-indigo-50/50 text-indigo-600 dark:bg-indigo-950/20 dark:text-indigo-400'
+                  : 'border-zinc-200 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-850'
+              }`}
+            >
+              Booklet Spread
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

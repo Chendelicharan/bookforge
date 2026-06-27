@@ -33,8 +33,32 @@ export default function LivePreview({ project, pages }: LivePreviewProps) {
     return { height: '100%' };
   };
 
+  const isSpread = project.settings.viewMode === 'spread';
+  const containerClass = isSpread
+    ? "grid grid-cols-2 gap-x-4 gap-y-10 py-8 px-8 max-w-fit mx-auto h-full overflow-y-auto print:flex print:flex-col print:gap-0 print:p-0"
+    : "flex flex-col items-center gap-8 py-8 w-full h-full overflow-y-auto print:p-0 print:gap-0";
+
+  const getPageClass = (pageNumber: number, isLeftPage: boolean) => {
+    const base = "book-page relative bg-[#faf9f6] text-[#1c1917] shadow-xl border border-zinc-200/50 flex flex-col justify-between select-none print:shadow-none print:border-none transition-transform duration-300";
+    
+    let layout = "";
+    if (isSpread) {
+      if (pageNumber === 1) {
+        layout = "col-start-2 rounded-r-md rounded-l-sm border-l border-l-zinc-300 shadow-l-md";
+      } else if (isLeftPage) {
+        layout = "rounded-l-md rounded-r-sm border-r border-r-zinc-300 shadow-r-md";
+      } else {
+        layout = "rounded-r-md rounded-l-sm border-l border-l-zinc-300 shadow-l-md";
+      }
+    } else {
+      layout = project.settings.binding === 'Hardcover' ? 'rounded-r-sm border-l-4 border-l-zinc-350' : 'rounded-sm';
+    }
+
+    return `${base} ${layout}`;
+  };
+
   return (
-    <div className="flex flex-col items-center gap-8 py-8 w-full h-full overflow-y-auto print:p-0 print:gap-0">
+    <div className={containerClass}>
       
       {/* Styles injected to handle fonts and specific layout rules */}
       <style dangerouslySetInnerHTML={{ __html: `
@@ -124,9 +148,7 @@ export default function LivePreview({ project, pages }: LivePreviewProps) {
           return (
             <div
               key={page.id}
-              className={`book-page relative bg-[#faf9f6] text-[#1c1917] shadow-xl border border-zinc-200/50 flex flex-col justify-between select-none print:shadow-none print:border-none transition-transform duration-300 ${
-                project.settings.binding === 'Hardcover' ? 'rounded-r-sm border-l-4 border-l-zinc-350' : 'rounded-sm'
-              }`}
+              className={getPageClass(page.pageNumber, page.isLeftPage)}
               style={pageStyle}
             >
               {/* Header: Alternating Book Title and Chapter Title */}
